@@ -10,13 +10,17 @@ namespace PowerPipes.Models
 {
     public class User
     {
-        [Required]
+        [Required(ErrorMessage = "Un nom d'utilisateur est requis")]
         [Display(Name = "Utilisateur")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Un mot de passe est requis")]
         [DataType(DataType.Password)]
         [Display(Name = "Mot de passe")]
         public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmation du mot de passe")]
+        public string ConfirmPassword { get; set; }
     }
 }

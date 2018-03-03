@@ -27,34 +27,63 @@ namespace PowerPipes.Controllers
                 
                 db.connection.Open();
 
-                string _sql = @"SELECT [Username] FROM [dbo].[System_Users] " +
+                string _sql = @"SELECT [Username] FROM [dbo].[Users] " +
                     @"WHERE [Username] = @u AND [Password] = @p";
-                var cmd = new SqlCommand(_sql, db.connection);
-                cmd.Parameters
-                    .Add(new SqlParameter("@u", SqlDbType.NVarChar))
-                    .Value = user.UserName;
-                cmd.Parameters
-                    .Add(new SqlParameter("@p", SqlDbType.NVarChar))
-                    .Value = user.Password;
+                var cmd = new SqlCommand("SELECT Username FROM Users WHERE Username = '"+user.UserName+"' AND Password='"+user.Password+"'", db.connection);
 
                 var reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     FormsAuthentication.SetAuthCookie(user.UserName, true);
-                    db.connection.Close();
-                    return RedirectToAction("Index", "Planning");
-                }
-                else
-                {
                     reader.Dispose();
                     cmd.Dispose();
                     db.connection.Close();
-                    ModelState.AddModelError("", "t poche");
+                    return RedirectToAction("Index", "Planning");
                 }
+
+                reader.Dispose();
+                cmd.Dispose();
+                db.connection.Close();
+                ModelState.AddModelError("", "Combinaison Utilisateur et Mot de passe invalide");
             }
             
             return View(user);
         }
+
+        public ActionResult New()
+        {
+            return View(new User());
+        }
+
+        [HttpPost]
+        public ActionResult New(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                if (user.Password == user.ConfirmPassword)
+                {
+                    var db = new DatabaseConnection(Server.MapPath("~"));
+
+                    db.connection.Open();
+
+                    var cmd = new SqlCommand("Insert Into Users (Username,Password) Values('" + user.UserName + "','" + user.Password + "')", db.connection);
+
+                    cmd.ExecuteNonQuery();
+                    cmd.Dispose();
+                    db.connection.Close();
+
+                    FormsAuthentication.SetAuthCookie(user.UserName, true);
+                    return RedirectToAction("Index", "Planning");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Veuillez valider que les mots de passes sont identiques");
+                }
+            }
+
+            return View(user);
+        }
+
 
         public ActionResult Logout()
         {

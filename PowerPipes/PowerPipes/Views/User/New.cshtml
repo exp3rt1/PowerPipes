@@ -7,12 +7,12 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" });
         <div>
             <fieldset>
-                <legend>Se connecter</legend>
+                <legend>Créer un compte</legend>
                 <div class="editor-label">
                     @Html.LabelFor(u => u.UserName)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(u => u.UserName, new { @class = "form-control" } )
+                    @Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(u => u.UserName, "", new { @class = "text-danger" })
                 </div>
                 <div class="editor-label">
@@ -22,9 +22,14 @@
                     @Html.PasswordFor(u => u.Password, new { @class = "form-control" })
                     @Html.ValidationMessageFor(u => u.Password, "", new { @class = "text-danger" })
                 </div>
-                <input type="submit" value="Connexion" class="btn btn-primary" />
-                <br>
-                @Html.ActionLink("Créer un compte", "New")
+                <div class="editor-label">
+                    @Html.LabelFor(u => u.ConfirmPassword)
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(u => u.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                <input type="submit" value="Créer" class="btn btn-primary" />
 
             </fieldset>
         </div>
