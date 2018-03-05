@@ -13,7 +13,7 @@
 
     @foreach (var training in Model)
     {
-        <div class="divTraining" onclick="window.location.href = '@Url.Action("Details", "Training", new { id =  @Html.ValueFor(x => training.Id) })'">
+        <div class="divTraining" onclick="window.location.href = '@Url.Action("Details", "Training", new { idTraining =  @Html.ValueFor(x => training.Id) })'">
             <div class="col-sm-10 bold padding-top">
                 @Html.DisplayFor(x => training.Name)
             </div>
@@ -26,3 +26,9 @@
         </div>
     }
 </div>
+
+<script>
+    $("#btnCreate").click(function () {
+        window.location.href = '@Url.Action("Create", "Training")';
+    });
+</script>

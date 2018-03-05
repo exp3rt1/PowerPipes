@@ -5,8 +5,192 @@
     <link href="@Url.Content("~/Content/Training.css")" rel="stylesheet" type="text/css" />
 }
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
 <div class="jumbotron">
-    <h2>
-        <span class="title">Détails d'un entraînement</span>
-    </h2>
+    <form id="form">
+        <div class="alert alert-success collapse" role="alert">
+            Modifications enregistrées avec succès!
+        </div>
+
+        <h2>
+            <span class="title">Détails d'un entraînement</span>
+        </h2>
+
+        <div class="value row">
+            <div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+                @Html.DisplayNameFor(m => m.Header.Name)
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-10">
+                @Html.EditorFor(m => m.Header.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Header.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="value row">
+            <div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+                @Html.DisplayNameFor(m => m.Header.Date)
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-10">
+                @Html.EditorFor(m => m.Header.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Header.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <button type="button" id="btnNewRow" class="btn btn btn-default pull-right">Ajouter un exercice</button>
+        <table class="table" id="tblTraining">
+            <thead>
+                <tr>
+                    <th scope="col" style="display:none">Id</th>
+                    <th scope="col">Mouvement</th>
+                    <th scope="col">Répétitions</th>
+                    <th scope="col">Répétitions ratées</th>
+                    <th scope="col">Poids</th>
+                    <th scope="col">Unité</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var exercice in Model.Exercises)
+                {
+                <tr>
+                    <td style="display:none">@Html.ValueFor(m => exercice.Id)</td>
+                    <td>@Html.DropDownListFor(m => exercice.MovementType, new SelectList(ViewBag.Movements, "Value", "Text", exercice.MovementType), new { id = string.Format("ddlMovementType_{0}", exercice.Id), @class = "form-control" })</td>
+                    <td>@Html.EditorFor(m => exercice.Repetition, new { htmlAttributes = new { id = string.Format("nbRepetitions_{0}", exercice.Id), @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(m => exercice.FailedRepetition, new { htmlAttributes = new { id = string.Format("nbFailedRepetitions_{0}", exercice.Id), @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(m => exercice.Weight, new { htmlAttributes = new { id = string.Format("weight_{0}", exercice.Id), @class = "form-control" } })</td>
+                    <td>@Html.DropDownListFor(m => exercice.Unit, new SelectList(ViewBag.Units, "Value", "Text", exercice.Unit), new { id = string.Format("ddlUnit_{0}", exercice.Id), @class = "form-control" })</td>
+                    <td><button type="button" class="btn btn-default" onclick="removeRow(this)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="col-md-12" style="text-align:right;">
+            <button type="button" id="btnSave" class="btn btn-primary">Sauvegarder</button>
+            <button type="button" id="btnDelete" class="btn btn-danger">Supprimer</button>
+        </div>
+    </form>
 </div>
+
+<script>
+    $("#btnDelete").click(function () {
+        if (confirm("Êtes-vous certain de vouloir supprimer cet entraînement?")) {
+            CallController(
+                "@Url.Action("Delete", "Training")",
+                { IdTraining: @Html.Raw(Json.Encode(Model.Header.Id)) }
+            )
+        }        
+    });
+
+    $("#btnNewRow").click(function () {
+        var body = $('#tblTraining').find("tbody");
+        var lastRow = body.find("tr:last");
+        var newRow = lastRow.clone();
+
+        newRow.addClass("newRow");
+
+        newRow.find('td:eq(0)').html("0");//id
+
+        var ddlMovementType = newRow.find('td:eq(1)').find("select");//movement
+        ddlMovementType.attr('id', "0");
+        ddlMovementType.val([]);
+        newRow.find('td:eq(1)').html(ddlMovementType);
+
+        var rep = newRow.find('td:eq(2)').find("input");//rep
+        rep.attr('id', "0");
+        rep.val(0);
+        newRow.find('td:eq(2)').html(rep);
+
+        var failedRep = newRow.find('td:eq(3)').find("input");//failedRep
+        failedRep.attr('id', "0");
+        failedRep.val(0);
+        newRow.find('td:eq(3)').html(failedRep);
+
+        var weight = newRow.find('td:eq(4)').find("input");//weight
+        weight.attr('id', "0");
+        weight.val(0);
+        newRow.find('td:eq(4)').html(weight);
+
+        var ddlUnit = newRow.find('td:eq(5)').find("select");//unit
+        ddlUnit.attr('id', "0");
+        ddlUnit.val([]);
+        newRow.find('td:eq(5)').html(ddlUnit);
+
+        var btnDelete = newRow.find('td:eq(6)').find("button");//unit
+        btnDelete.on('click', function () {
+            removeRow(btnDelete);
+        });
+        newRow.find('td:eq(6)').html(btnDelete);
+
+        lastRow.after(newRow);
+    });
+
+
+    $("#btnSave").click(function () {
+        if ($('#form').valid()) {
+            var trainingHeader = {
+                Id: @Html.Raw(Json.Encode(Model.Header.Id)),
+                Date: $("#Header_Date").val(),
+                Name: $("#Header_Name").val()
+            }
+
+            var exercises = [];
+
+            $('#tblTraining > tbody  > tr').each(function () {
+                var id = this.cells[0].innerText;
+
+                if (id !== "0") {
+                    exercises.push(
+                        {
+                            Id: id,
+                            MovementType: $("#ddlMovementType_" + id).val(),
+                            Repetition: $("#nbRepetitions_" + id).val(),
+                            FailedRepetition: $("#nbFailedRepetitions_" + id).val(),
+                            Weight: $("#weight_" + id).val(),
+                            Unit: $("#ddlUnit_" + id).val(),
+                        }
+                    );
+                }
+                //New rows
+                else {
+                    exercises.push(
+                        {
+                            Id: 0,
+                            MovementType: this.cells[1].children[0].value,
+                            Repetition: this.cells[2].children[0].value,
+                            FailedRepetition: this.cells[3].children[0].value,
+                            Weight: this.cells[4].children[0].value,
+                            Unit: this.cells[5].children[0].value,
+                        }
+                    );
+                }
+            });
+
+            CallController(
+                "@Url.Action("Modify", "Training")",
+                {
+                    training: {
+                        Header: trainingHeader,
+                        Exercises: exercises
+                    }
+                }
+            ).done(function (data) {
+                $('.alert').fadeToggle(1000).delay(1000).fadeToggle(1000);;
+            });
+        }
+    });
+
+    function removeRow(btn) {
+        var nbRows = $('#tblTraining > tbody > tr').length;
+
+        if (nbRows > 1) {
+            btn.closest("tr").remove();
+        }
+        else {
+            alert("Vous devez avoir au moins un exercise.");
+        }
+    };
+</script>
