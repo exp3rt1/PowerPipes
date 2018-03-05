@@ -12,7 +12,7 @@ namespace PowerPipes.Controllers
     {
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && Session["IdUser"] != null)
             {
                 return View();
             }

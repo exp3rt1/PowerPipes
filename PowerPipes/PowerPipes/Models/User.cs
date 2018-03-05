@@ -10,6 +10,8 @@ namespace PowerPipes.Models
 {
     public class User
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Un nom d'utilisateur est requis")]
         [Display(Name = "Utilisateur")]
         public string UserName { get; set; }

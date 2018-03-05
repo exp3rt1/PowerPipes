@@ -15,6 +15,7 @@ namespace PowerPipes.Controllers
     {
         public ActionResult Login()
         {
+            FormsAuthentication.SignOut();
             return View();
         }
 
@@ -27,18 +28,21 @@ namespace PowerPipes.Controllers
                 
                 db.connection.Open();
 
-                string _sql = @"SELECT [Username] FROM [dbo].[Users] " +
-                    @"WHERE [Username] = @u AND [Password] = @p";
-                var cmd = new SqlCommand("SELECT Username FROM Users WHERE Username = '"+user.UserName+"' AND Password='"+user.Password+"'", db.connection);
+                var cmd = new SqlCommand("SELECT Id, Username FROM Users WHERE Username = '"+user.UserName+"' AND Password='"+user.Password+"'", db.connection);
 
                 var reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
+                    while (reader.Read())
+                    {
+                        Session["IdUser"] = reader["Id"];
+                    }
+
                     FormsAuthentication.SetAuthCookie(user.UserName, true);
                     reader.Dispose();
                     cmd.Dispose();
                     db.connection.Close();
-                    return RedirectToAction("Index", "Planning");
+                    return RedirectToAction("Index", "Training");
                 }
 
                 reader.Dispose();
@@ -73,7 +77,7 @@ namespace PowerPipes.Controllers
                     db.connection.Close();
 
                     FormsAuthentication.SetAuthCookie(user.UserName, true);
-                    return RedirectToAction("Index", "Planning");
+                    return RedirectToAction("Index", "Training");
                 }
                 else
                 {

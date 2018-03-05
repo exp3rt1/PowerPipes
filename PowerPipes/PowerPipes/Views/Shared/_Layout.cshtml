@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PowerPipes</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -19,18 +20,18 @@
                 </button>
                 @if (Request.IsAuthenticated)
                 {
-                    @Html.ActionLink("PowerPipes", "Index", "Planning", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("PowerPipes", "Index", "Training", new { area = "" }, new { @class = "navbar-brand" })
                 }
                 else
                 {
-                    @Html.ActionLink("PowerPipes", "Login", "user", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("PowerPipes", "Login", "User", new { area = "" }, new { @class = "navbar-brand" })
                 }
             </div>
             <div class="navbar-collapse collapse">
                 @if (Request.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Planification", "Index", "Planning")</li>
+                        <li>@Html.ActionLink("Entraînements", "Index", "Training")</li>
                         <li>@Html.ActionLink("Statistiques", "Index", "Statistics")</li>
                         <li>@Html.ActionLink("Profil et progression", "Index", "Profile")</li>
                     </ul>
