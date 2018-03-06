@@ -57,7 +57,7 @@ namespace PowerPipes.BL
         {
             var trainingList = new List<TrainingHeader>();
 
-            var cmd = new SqlCommand("SELECT * FROM Training WHERE IdUser =" + idUser, db.connection);
+            var cmd = new SqlCommand("SELECT * FROM Training WHERE IdUser =" + idUser + "ORDER BY Date", db.connection);
 
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)

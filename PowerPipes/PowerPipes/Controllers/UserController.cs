@@ -70,9 +70,9 @@ namespace PowerPipes.Controllers
 
                     db.connection.Open();
 
-                    var cmd = new SqlCommand("Insert Into Users (Username,Password) Values('" + user.UserName + "','" + user.Password + "')", db.connection);
+                    var cmd = new SqlCommand("Insert Into Users (Username,Password) output INSERTED.ID Values('" + user.UserName + "','" + user.Password + "')", db.connection);
 
-                    cmd.ExecuteNonQuery();
+                    Session["IdUser"] = (int)cmd.ExecuteScalar();
                     cmd.Dispose();
                     db.connection.Close();
 
