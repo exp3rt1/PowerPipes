@@ -142,17 +142,21 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BL\MeetBL.cs" />
     <Compile Include="BL\TrainingBL.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
-    <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\MeetController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAccess\DatabaseConnection.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Exercise.cs" />
+    <Compile Include="Models\Meet.cs" />
+    <Compile Include="Models\MeetHeader.cs" />
+    <Compile Include="Models\MeetResult.cs" />
     <Compile Include="Models\Training.cs" />
     <Compile Include="Models\TrainingHeader.cs" />
     <Compile Include="Models\User.cs" />
@@ -165,6 +169,7 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Meet.css" />
     <Content Include="Content\Training.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -202,9 +207,11 @@
     <Content Include="Views\User\New.cshtml" />
     <Content Include="Views\Training\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Meet\Index.cshtml" />
     <Content Include="Views\Training\Details.cshtml" />
     <Content Include="Views\Training\Create.cshtml" />
+    <Content Include="Views\Meet\Details.cshtml" />
+    <Content Include="Views\Meet\Create.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

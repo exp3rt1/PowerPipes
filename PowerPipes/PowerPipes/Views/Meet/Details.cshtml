@@ -1,0 +1,129 @@
+﻿@using PowerPipes.Models
+@model Meet
+
+@section Styles {
+    <link href="@Url.Content("~/Content/Meet.css")" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<div class="jumbotron">
+	<form id="form">
+		<div class="alert alert-success collapse" role="alert">
+			Modifications enregistrées avec succès!
+		</div>
+
+		<h2>
+			<span class="title">Résultats d'une compétition</span>
+		</h2>
+
+		<div class="value row">
+			<div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+				@Html.DisplayNameFor(m => m.Header.Name)
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-10">
+				@Html.EditorFor(m => m.Header.Name, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(m => m.Header.Name, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="value row">
+			<div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+				@Html.DisplayNameFor(m => m.Header.Date)
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-10">
+				@Html.EditorFor(m => m.Header.Date, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(m => m.Header.Date, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="value row">
+			<div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+				@Html.DisplayNameFor(m => m.Header.PersonalWeight)
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-10">
+				@Html.EditorFor(m => m.Header.PersonalWeight, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(m => m.Header.Date, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<table class="table" id="tblResult">
+			<thead>
+				<tr>
+					<th scope="col" style="display:none">Id</th>
+					<th scope="col" style="display:none">MovementType</th>
+					<th scope="col">Mouvement</th>
+					<th scope="col">Poids (kg)</th>
+					<th scope="col">Succès</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var result in Model.Results)
+				{
+				<tr>
+					<td style="display:none">@Html.ValueFor(m => result.Id)</td>
+					<td style="display:none">@Html.ValueFor(m => result.MovementType)</td>
+					<td>@Html.ValueFor(m => result.Name)</td>
+					<td>@Html.EditorFor(m => result.Weight, new { htmlAttributes = new { id = string.Format("weight_{0}", result.Id), @class = "form-control", min = "0" } })</td>
+					<td>@Html.DropDownListFor(m => result.Success, new SelectList(ViewBag.SuccessChoices, "Value", "Text", result.Success), new { id = string.Format("ddlSuccess_{0}", result.Id), @class = "form-control" })</td>
+				</tr>
+				}
+			</tbody>
+		</table>
+
+		<div class="col-md-12" style="text-align:right;">
+			<button type="button" id="btnSave" class="btn btn-primary">Sauvegarder</button>
+			<button type="button" id="btnDelete" class="btn btn-danger">Supprimer</button>
+		</div>
+	</form>
+</div>
+
+<script>
+    $("#btnDelete").click(function () {
+        if (confirm("Êtes-vous certain de vouloir supprimer ces résulats?")) {
+            CallController(
+                "@Url.Action("Delete", "Meet")",
+                { IdMeet: @Html.Raw(Json.Encode(Model.Header.Id)) }
+            )
+        }        
+    });
+
+    $("#btnSave").click(function () {
+        if ($('#form').valid()) {
+            var meetHeader = {
+                Id: @Html.Raw(Json.Encode(Model.Header.Id)),
+                Date: $("#Header_Date").val(),
+                Name: $("#Header_Name").val(),
+				PersonalWeight: $("#Header_PersonalWeight").val()
+            }
+
+			var results = [];
+
+			$('#tblResult > tbody  > tr').each(function () {
+				results.push(
+					{
+						Id: this.cells[0].innerText,
+						MovementType: this.cells[1].innerText,
+						Name: this.cells[2].innerText,
+						Weight: this.cells[3].children[0].value,
+						Success: this.cells[4].children[0].value
+					}
+				);
+			});
+
+            CallController(
+                "@Url.Action("Modify", "Meet")",
+                {
+					meet: {
+						Header: meetHeader,
+						Results: results
+                    }
+                }
+            ).done(function (data) {
+                $('.alert').fadeToggle(1000).delay(1000).fadeToggle(1000);;
+            });
+        }
+    });
+</script>
