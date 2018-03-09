@@ -11,7 +11,7 @@ namespace PowerPipes.BL
 {
 	public static class MeetBL
 	{
-		public static List<MeetHeader> GetTrainings(int idUser, DatabaseConnection db)
+		public static List<MeetHeader> GetMeets(int idUser, DatabaseConnection db)
 		{
 			var meetList = new List<MeetHeader>();
 
@@ -122,5 +122,35 @@ namespace PowerPipes.BL
 				cmd.Dispose();
 			}
 		}
-	}
+
+        public static void UpdateMeet(Meet meet, DatabaseConnection db)
+        {
+            var cmd = new SqlCommand("UPDATE Meet SET Date = '" + meet.Header.Date + "', Name = '" + meet.Header.Name + "',  PersonalWeight = " + meet.Header.PersonalWeight + " WHERE Id =" + meet.Header.Id, db.connection);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            cmd = new SqlCommand("DELETE FROM MeetResult WHERE IdMeet = " + meet.Header.Id, db.connection);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            foreach (var result in meet.Results)
+            {
+                cmd = new SqlCommand("INSERT INTO MeetResult (IdMeet, MovementType, Weight, Success, Name) " +
+                    "VALUES(" + meet.Header.Id + ", " + result.MovementType + ", " + result.Weight + ", " + Convert.ToInt32(result.Success) + ", '" + result.Name + "')", db.connection);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+            }
+        }
+
+        public static void DeleteMeet(int idMeet, DatabaseConnection db)
+        {
+            var cmd = new SqlCommand("DELETE FROM MeetResult WHERE IdMeet = " + idMeet, db.connection);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            cmd = new SqlCommand("DELETE FROM Meet WHERE Id = " + idMeet, db.connection);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+        }
+    }
 }

@@ -145,6 +145,7 @@
     <Compile Include="BL\MeetBL.cs" />
     <Compile Include="BL\TrainingBL.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\GoalController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Controllers\MeetController.cs" />
@@ -212,6 +213,7 @@
     <Content Include="Views\Training\Create.cshtml" />
     <Content Include="Views\Meet\Details.cshtml" />
     <Content Include="Views\Meet\Create.cshtml" />
+    <Content Include="Views\Goal\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

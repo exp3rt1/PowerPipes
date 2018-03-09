@@ -19,7 +19,7 @@ namespace PowerPipes.Controllers
 				var db = new DatabaseConnection(Server.MapPath("~"));
 				db.connection.Open();
 
-				var meetList = MeetBL.GetTrainings((int)Session["IdUser"], db);
+				var meetList = MeetBL.GetMeets((int)Session["IdUser"], db);
 
 				db.connection.Close();
 
@@ -84,12 +84,25 @@ namespace PowerPipes.Controllers
 		[HttpPost]
 		public JsonResult Modify(Meet meet)
 		{
-			return Json(new { status = "Saved" });
+            var db = new DatabaseConnection(Server.MapPath("~"));
+            db.connection.Open();
+
+            MeetBL.UpdateMeet(meet, db);
+
+            db.connection.Close();
+            return Json(new { status = "Saved" });
 		}
 
 		public ActionResult Delete(int idMeet)
 		{
-			return Redirect("Index", "Meet", null);
+            var db = new DatabaseConnection(Server.MapPath("~"));
+            db.connection.Open();
+
+            MeetBL.DeleteMeet(idMeet, db);
+
+            db.connection.Close();
+
+            return Redirect("Index", "Meet", null);
 		}
 	}
 }

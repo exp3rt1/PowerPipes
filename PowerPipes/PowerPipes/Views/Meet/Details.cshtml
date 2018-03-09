@@ -122,6 +122,7 @@
                     }
                 }
             ).done(function (data) {
+                window.scrollTo(0, 0);
                 $('.alert').fadeToggle(1000).delay(1000).fadeToggle(1000);;
             });
         }
