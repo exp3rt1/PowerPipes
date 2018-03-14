@@ -1,0 +1,81 @@
+﻿@using PowerPipes.Models
+@model Goal
+
+@section Styles {
+	<link href="@Url.Content("~/Content/Goal.css")" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+
+<div class="jumbotron">
+	<form id="form">
+		<h2>
+			<span class="title">Création d'un objectif</span>
+		</h2>
+
+		<div class="value row">
+			<div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+				@Html.DisplayNameFor(m => m.Name)
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-10">
+				@Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="value row">
+			<div class="col-xs-12 col-sm-3 col-md-2 sm-right-align bold">
+				@Html.DisplayNameFor(m => m.Date)
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-10">
+				@Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<table class="table" id="tblGoal">
+			<thead>
+				<tr>
+					<th scope="col">Mouvement</th>
+					<th scope="col">Poids</th>
+					<th scope="col">Unité</th>
+					<th scope="col">Répétitions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>@Html.DropDownListFor(m => m.MovementType, new SelectList(ViewBag.Movements, "Value", "Text"), new { @class = "form-control" })</td>
+					<td>@Html.EditorFor(m => m.Weight, new { htmlAttributes = new { @class = "form-control", min = "0" } })</td>
+					<td>@Html.DropDownListFor(m => m.Unit, new SelectList(ViewBag.Units, "Value", "Text"), new { @class = "form-control" })</td>
+					<td>@Html.EditorFor(m => m.Repetition, new { htmlAttributes = new { @class = "form-control", min = "0" } })</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<button type="button" id="btnSave" class="btn btn-primary pull-right">Créer</button>
+	</form>
+</div>
+
+<script>
+    $("#btnSave").click(function () {
+        var test = $('#form');
+        if ($('#form').valid()) {
+            var goal = {
+                Id: @Html.Raw(Json.Encode(Model.Id)),
+                Date: $("#Date").val(),
+                Name: $("#Name").val(),
+				MovementType: $("#MovementType").val(),
+				Weight: $("#Weight").val(),
+				Unit: $("#Unit").val(),
+				Repetition: $("#Repetition").val()
+            }
+
+            CallController(
+                "@Url.Action("Create", "Goal")", goal).done(function (data) {
+                $('.alert').fadeToggle(1000).delay(1000).fadeToggle(1000);;
+            });
+        }
+    });
+</script>
