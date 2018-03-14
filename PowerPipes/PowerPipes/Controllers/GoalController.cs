@@ -59,6 +59,7 @@ namespace PowerPipes.Controllers
 		public ActionResult Create()
 		{
 			var goal = new Goal();
+            goal.Date = DateTime.Today;
 
 			ViewBag.Units = GoalBL.GetUnits();
 

@@ -1,0 +1,52 @@
+﻿label {
+    font-weight: normal;
+}
+
+.divGoal {
+    background: #fff;
+    color: #007EB6;
+    border: 1px solid rgb(204, 204, 204);
+    margin-bottom: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.divGoal:hover {
+    border: 1px solid rgba(0, 158, 224, 0.6);
+    background: rgba(0, 158, 224, 0.05);
+    cursor: pointer;
+}
+
+.scroll-up {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    border: 1px solid #79c3ec;
+    background: #f4fafd;
+    color: #79c3ec;
+}
+
+    .scroll-up:hover,
+    .scroll-up:focus {
+        background: #79c3ec;
+        border-color: #79c3ec;
+    }
+
+.overlay {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.divGoal:hover .overlay {
+    opacity: 0.5;
+}
+
+.padding-top {
+    padding-top: 5px;
+}
