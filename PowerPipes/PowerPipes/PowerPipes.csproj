@@ -160,6 +160,7 @@
     <Compile Include="Models\Meet.cs" />
     <Compile Include="Models\MeetHeader.cs" />
     <Compile Include="Models\MeetResult.cs" />
+    <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Training.cs" />
     <Compile Include="Models\TrainingHeader.cs" />
     <Compile Include="Models\User.cs" />

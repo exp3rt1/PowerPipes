@@ -53,6 +53,24 @@ namespace PowerPipes.BL
             return movements;
         }
 
+        public static String GetMovementName(int MovementType, DatabaseConnection db)
+        {
+            var movementName = "";
+
+            var cmd = new SqlCommand("SELECT * FROM MovementType WHERE Id = " + MovementType, db.connection);
+
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                movementName = reader["Name"].ToString();
+
+                reader.Dispose();
+                cmd.Dispose();
+            }
+
+            return movementName;
+        }
+
         public static List<TrainingHeader> GetTrainings(int idUser, DatabaseConnection db)
         {
             var trainingList = new List<TrainingHeader>();
