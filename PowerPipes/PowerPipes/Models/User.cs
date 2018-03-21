@@ -21,6 +21,12 @@ namespace PowerPipes.Models
         [Display(Name = "Mot de passe")]
         public string Password { get; set; }
 
+        [Display(Name = "Nom")]
+        public string Name { get; set; }
+
+        [Display(Name = "Age")]
+        public int Age{ get; set; }
+
         [DataType(DataType.Password)]
         [Display(Name = "Confirmation du mot de passe")]
         public string ConfirmPassword { get; set; }

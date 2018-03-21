@@ -9,6 +9,20 @@
             <fieldset>
                 <legend>Créer un compte</legend>
                 <div class="editor-label">
+                    @Html.LabelFor(u => u.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(u => u.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="editor-label">
+                    @Html.LabelFor(u => u.Age)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(u => u.Age, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Age, "", new { @class = "text-danger" })
+                </div>
+                <div class="editor-label">
                     @Html.LabelFor(u => u.UserName)
                 </div>
                 <div class="editor-field">
