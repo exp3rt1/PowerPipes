@@ -28,7 +28,7 @@ namespace PowerPipes.Controllers
                 
                 db.connection.Open();
 
-                var cmd = new SqlCommand("SELECT Id, Username FROM Users WHERE Username = '"+user.UserName+"' AND Password='"+user.Password+"'", db.connection);
+                var cmd = new SqlCommand("SELECT Id, Username, Name, Age FROM Users WHERE Username = '"+user.UserName+"' AND Password='"+user.Password+"'", db.connection);
 
                 var reader = cmd.ExecuteReader();
                 if (reader.HasRows)
@@ -36,6 +36,8 @@ namespace PowerPipes.Controllers
                     while (reader.Read())
                     {
                         Session["IdUser"] = reader["Id"];
+                        user.Name = (String)reader["Name"];
+                        user.Age = (int)reader["Age"];
                     }
 
                     FormsAuthentication.SetAuthCookie(user.UserName, true);

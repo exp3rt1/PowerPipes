@@ -21,8 +21,13 @@ namespace PowerPipes.Controllers
                 var db = new DatabaseConnection(Server.MapPath("~"));
                 db.connection.Open();
 
-                var user = new User();
-                var meetResultList = MeetBL.GetResults((int)Session["IdUser"], db);
+                var user = UserBL.GetUser((int)Session["IdUser"], db);
+
+                profile.UserName = user.UserName;
+                profile.Name = user.Name;
+                profile.Age = user.Age;
+                profile.IdUser = (int)Session["IdUser"];
+                /*var meetResultList = MeetBL.GetResults((int)Session["IdUser"], db);
                 var trainingList = TrainingBL.GetTrainings((int)Session["IdUser"], db);
 
                 profile.Name = user.Name;
@@ -92,7 +97,7 @@ namespace PowerPipes.Controllers
                 profile.MaxTrainingBench = maxTrainingBench;
                 profile.MaxTrainingBenchUnit = maxTrainingBenchUnit;
                 profile.MaxTrainingDeadlift = maxTrainingDeadlift;
-                profile.MaxTrainingDeadliftUnit = maxTrainingDeadliftUnit;
+                profile.MaxTrainingDeadliftUnit = maxTrainingDeadliftUnit;*/
 
                 db.connection.Close();
 
@@ -102,6 +107,21 @@ namespace PowerPipes.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+        }
+
+        [HttpPost]
+        public JsonResult Modify(Profile profile)
+        {
+            Console.WriteLine("Hello World!");
+
+            var db = new DatabaseConnection(Server.MapPath("~"));
+            db.connection.Open();
+
+            UserBL.UpdateUser(profile, db);
+
+            db.connection.Close();
+
+            return Json(new { status = "Saved" });
         }
     }
 }

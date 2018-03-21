@@ -10,12 +10,19 @@ namespace PowerPipes.Models
     public class Profile
     {
         [Required(ErrorMessage = "Un nom est requis")]
-        [DisplayName("Nom")]
+        [DisplayName("Name")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Un alias est requis")]
+        [DisplayName("UserName")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Un age est requis")]
+        [DisplayName("Age")]
         [Range(0.0, Double.MaxValue)]
         public int Age { get; set; }
 
+        /*
         [Range(0.0, Double.MaxValue)]
         public int MaxTrainingSquat { get; set; }
 
@@ -44,7 +51,7 @@ namespace PowerPipes.Models
         [Range(0.0, Double.MaxValue)]
         public int MaxCompetitionDeadlift { get; set; }
 
-        public string MaxCompetitionDeadliftUnit { get; set; }
+        public string MaxCompetitionDeadliftUnit { get; set; }*/
 
         public int IdUser { get; set; }
     }
