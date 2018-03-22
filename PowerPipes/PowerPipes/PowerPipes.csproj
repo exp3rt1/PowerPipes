@@ -147,6 +147,7 @@
     <Compile Include="BL\MeetBL.cs" />
     <Compile Include="BL\TrainingBL.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\GoalController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dashboard.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\Goal.cs" />
     <Compile Include="Models\Meet.cs" />
@@ -221,6 +223,7 @@
     <Content Include="Views\Goal\Index.cshtml" />
     <Content Include="Views\Goal\Create.cshtml" />
     <Content Include="Views\Goal\Details.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace PowerPipes.Models
 
 		[Required(ErrorMessage = "Un poids est requis")]
 		[DisplayName("Poids")]
-		public int Weight { get; set; }
+		public float Weight { get; set; }
 
 		[Required]
 		[DisplayName("Réussi")]

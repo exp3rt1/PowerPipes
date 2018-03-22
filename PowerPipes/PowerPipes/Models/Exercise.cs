@@ -22,7 +22,7 @@ namespace PowerPipes.Models
         public int FailedRepetition { get; set; }
 
         [Range(0.0, Double.MaxValue)]
-        public int Weight { get; set; }
+        public float Weight { get; set; }
 
         public string Unit { get; set; }
     }

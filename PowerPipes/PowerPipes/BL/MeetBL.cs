@@ -71,7 +71,7 @@ namespace PowerPipes.BL
 						IdMeet = idMeet,
 						MovementType = (int)reader["MovementType"],
 						Name = reader["Name"].ToString(),
-						Weight = (int)reader["Weight"],
+						Weight = (float)reader["Weight"],
 						Success = (bool)reader["Success"]
 					});
 				}
@@ -98,7 +98,7 @@ namespace PowerPipes.BL
 					header.Name = reader["Name"].ToString();
 					header.Date = (DateTime)reader["Date"];
 					header.IdUser = (int)reader["IdUser"];
-					header.PersonalWeight = (int)reader["PersonalWeight"];
+					header.PersonalWeight = (float)reader["PersonalWeight"];
 				}
 			}
 

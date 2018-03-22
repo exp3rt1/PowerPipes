@@ -139,7 +139,7 @@ namespace PowerPipes.BL
                         Repetition = (int)reader["Repetition"],
                         FailedRepetition = (int)reader["FailedRepetition"],
                         MovementType = (int)reader["MovementType"],
-                        Weight = (int)reader["Weight"],
+                        Weight = (float)reader["Weight"],
                         Unit = reader["Unit"].ToString()
                     });
                 }

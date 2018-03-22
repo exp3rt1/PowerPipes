@@ -22,7 +22,7 @@ namespace PowerPipes.Models
 
 		[Required(ErrorMessage = "Un poids est requis")]
 		[DisplayName("Poids (kg)")]
-		public int PersonalWeight { get; set; }
+		public float PersonalWeight { get; set; }
 
 		public int IdUser { get; set; }
 	}

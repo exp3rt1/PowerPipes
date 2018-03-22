@@ -71,7 +71,7 @@ namespace PowerPipes.BL
 						Date = (DateTime)reader["Date"],
 						Repetition = (int)reader["Repetition"],
 						MovementType = (int)reader["MovementType"],
-						Weight = (int)reader["Weight"],
+						Weight = (float)reader["Weight"],
 						Unit = reader["Unit"].ToString(),
 						IdUser = (int)reader["IdUser"]
 				});
@@ -99,7 +99,7 @@ namespace PowerPipes.BL
 				goal.Date = (DateTime)reader["Date"];
 				goal.Repetition = (int)reader["Repetition"];
 				goal.MovementType = (int)reader["MovementType"];
-				goal.Weight = (int)reader["Weight"];
+				goal.Weight = (float)reader["Weight"];
 				goal.Unit = reader["Unit"].ToString();
 				goal.IdUser = (int)reader["IdUser"];
 			}

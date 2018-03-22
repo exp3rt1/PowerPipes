@@ -1,0 +1,60 @@
+﻿@using PowerPipes.Models
+@model Dashboard
+
+@section Styles {
+    <link href="@Url.Content("~/Content/Dashboard.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="jumbotron">
+    <h2> <span class="title">Dashboard</span> </h2>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Best Competition Squat</th>
+                <th scope="col">Best Competition Bench</th>
+                <th scope="col">Best Competition Deadlift</th>
+                <th scope="col">Best Training Squat</th>
+                <th scope="col">Best Training Bench</th>
+                <th scope="col">Best Training Deadlift</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> @Html.DisplayFor(m => m.MaxCompetitionSquat) </td>
+                <td> @Html.DisplayFor(m => m.MaxCompetitionBench) </td>
+                <td> @Html.DisplayFor(m => m.MaxCompetitionDeadlift) </td>
+                <td> @Html.DisplayFor(m => m.MaxTrainingSquat) </td>
+                <td> @Html.DisplayFor(m => m.MaxTrainingBench) </td>
+                <td> @Html.DisplayFor(m => m.MaxTrainingDeadlift) </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <div class="col-sm-6 bold padding-top">
+        <img src="../images/squat-graph.png">
+    </div>
+
+    <div class="col-sm-6 bold padding-top">
+        <img src="../images/bench-graph.png">
+    </div>
+</div>
+
+<div>
+    <div class="col-sm-6 bold padding-top">
+        <img src="../images/dead-graph.png">
+    </div>
+
+    <div class="col-sm-6 bold padding-top">
+        <img src="../images/total-graph.png">
+    </div>
+</div>
+
+<div>
+    <div class="col-sm-6 bold padding-top">
+        <img src="../images/wilks-graph.png">
+    </div>
+</div>
