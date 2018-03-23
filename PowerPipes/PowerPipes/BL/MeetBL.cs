@@ -83,6 +83,39 @@ namespace PowerPipes.BL
 			return results;
 		}
 
+        public static List<MeetResult> GetResultsForUser(int idUser, DatabaseConnection db)
+        {
+            var results = new List<MeetResult>();
+            var meetHeaders = GetMeets(idUser, db);
+
+            foreach (var meetHeader in meetHeaders)
+            {
+                var cmd = new SqlCommand("SELECT * FROM MeetResult WHERE IdMeet =" + meetHeader.Id, db.connection);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(new MeetResult
+                        {
+                            Id = (int)reader["Id"],
+                            IdMeet = meetHeader.Id,
+                            MovementType = (int)reader["MovementType"],
+                            Name = reader["Name"].ToString(),
+                            Weight = (float)reader["Weight"],
+                            Success = (bool)reader["Success"]
+                        });
+                    }
+                }
+
+                reader.Dispose();
+                cmd.Dispose();
+            }
+
+            return results;
+        }
+
 		public static MeetHeader GetHeader(int idMeet, DatabaseConnection db)
 		{
 			var header = new MeetHeader();

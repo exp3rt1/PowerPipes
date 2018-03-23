@@ -73,9 +73,22 @@ namespace PowerPipes.BL
 
         public static List<TrainingHeader> GetTrainings(int idUser, DatabaseConnection db)
         {
+            return GetTrainingsWithOrder(idUser, false, db);
+        }
+
+        public static List<TrainingHeader> GetTrainingsWithOrder(int idUser, bool ascending, DatabaseConnection db)
+        {
             var trainingList = new List<TrainingHeader>();
 
-            var cmd = new SqlCommand("SELECT * FROM Training WHERE IdUser =" + idUser + "ORDER BY Date", db.connection);
+            SqlCommand cmd;
+            if(ascending)
+            {
+                cmd = new SqlCommand("SELECT * FROM Training WHERE IdUser =" + idUser + "ORDER BY Date ASC", db.connection);
+            }
+            else
+            {
+                cmd = new SqlCommand("SELECT * FROM Training WHERE IdUser =" + idUser + "ORDER BY Date DESC", db.connection);
+            }
 
             var reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -95,6 +108,137 @@ namespace PowerPipes.BL
             cmd.Dispose();
 
             return trainingList;
+        }
+
+        public static List<MovementProgressElement> GetSquatProgression(int idUser, DatabaseConnection db)
+        {
+            var exerciseList = new List<MovementProgressElement>();
+
+            var bestSquat = 0.0f;
+
+            foreach(var training in GetTrainingsWithOrder(idUser, true, db))
+            {
+                var cmd = new SqlCommand("SELECT * FROM Exercise WHERE IdTraining =" + training.Id, db.connection);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var exercise = new Exercise
+                        {
+                            Id = (int)reader["Id"],
+                            IdTraining = (int)reader["IdTraining"],
+                            MovementType = (int)reader["MovementType"],
+                            Repetition = (int)reader["Repetition"],
+                            FailedRepetition = (int)reader["FailedRepetition"],
+                            Weight = (float)reader["Weight"],
+                            Unit = reader["Unit"].ToString()
+                        };
+
+                        if(exercise.MovementType == 1 && exercise.MovementType > 0 && exercise.Weight > bestSquat)
+                        {
+                            exerciseList.Add(new MovementProgressElement
+                            {
+                                Date = training.Date,
+                                Weight = exercise.Weight
+                            });
+
+                            bestSquat = exercise.Weight;
+                        }
+                    }
+                }
+
+                reader.Dispose();
+                cmd.Dispose();
+            }
+            return exerciseList;
+        }
+
+        public static List<MovementProgressElement> GetBenchProgression(int idUser, DatabaseConnection db)
+        {
+            var exerciseList = new List<MovementProgressElement>();
+
+            var bestBench = 0.0f;
+
+            foreach (var training in GetTrainingsWithOrder(idUser, true, db))
+            {
+                var cmd = new SqlCommand("SELECT * FROM Exercise WHERE IdTraining =" + training.Id, db.connection);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var exercise = new Exercise
+                        {
+                            Id = (int)reader["Id"],
+                            IdTraining = (int)reader["IdTraining"],
+                            MovementType = (int)reader["MovementType"],
+                            Repetition = (int)reader["Repetition"],
+                            FailedRepetition = (int)reader["FailedRepetition"],
+                            Weight = (float)reader["Weight"],
+                            Unit = reader["Unit"].ToString()
+                        };
+
+                        if (exercise.MovementType == 2 && exercise.MovementType > 0 && exercise.Weight > bestBench)
+                        {
+                            exerciseList.Add(new MovementProgressElement {
+                                Date = training.Date,
+                                Weight = exercise.Weight
+                            });
+                            bestBench = exercise.Weight;
+                        }
+                    }
+                }
+
+                reader.Dispose();
+                cmd.Dispose();
+            }
+            return exerciseList;
+        }
+
+        public static List<MovementProgressElement> GetDeadliftProgression(int idUser, DatabaseConnection db)
+        {
+            var exerciseList = new List<MovementProgressElement>();
+
+            var bestDeadlift = 0.0f;
+
+            foreach (var training in GetTrainingsWithOrder(idUser, true, db))
+            {
+                var cmd = new SqlCommand("SELECT * FROM Exercise WHERE IdTraining =" + training.Id, db.connection);
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var exercise = new Exercise
+                        {
+                            Id = (int)reader["Id"],
+                            IdTraining = (int)reader["IdTraining"],
+                            MovementType = (int)reader["MovementType"],
+                            Repetition = (int)reader["Repetition"],
+                            FailedRepetition = (int)reader["FailedRepetition"],
+                            Weight = (float)reader["Weight"],
+                            Unit = reader["Unit"].ToString()
+                        };
+
+                        if (exercise.MovementType == 3 && exercise.MovementType > 0 && exercise.Weight > bestDeadlift)
+                        {
+                            exerciseList.Add(new MovementProgressElement {
+                                Date = training.Date,
+                                Weight = exercise.Weight
+                            });
+                            bestDeadlift = exercise.Weight;
+                        }
+                    }
+                }
+
+                reader.Dispose();
+                cmd.Dispose();
+            }
+            return exerciseList;
         }
 
         public static TrainingHeader GetHeader(int idTraining, DatabaseConnection db)

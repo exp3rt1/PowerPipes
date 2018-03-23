@@ -22,7 +22,7 @@ namespace PowerPipes.Controllers
                 db.connection.Open();
 
                 var user = UserBL.GetUser((int)Session["IdUser"], db);
-                var meetResultList = MeetBL.GetResults((int)Session["IdUser"], db);
+                var meetResultList = MeetBL.GetResultsForUser((int)Session["IdUser"], db);
                 var trainingList = TrainingBL.GetTrainings((int)Session["IdUser"], db);
 
                 dashboard.Name = user.Name;
@@ -39,20 +39,22 @@ namespace PowerPipes.Controllers
 
                 foreach (var meetResult in meetResultList)
                 {
-                    //if (meetResult.Name.Contains("Squat") && meetResult.Weight > maxMeetSquat)
-                    if (meetResult.MovementType == 1 && meetResult.Weight > maxMeetSquat)
+                    if (meetResult.Success)
                     {
-                        maxMeetSquat = meetResult.Weight;
-                    }
+                        if (meetResult.MovementType == 1 && meetResult.Weight > maxMeetSquat)
+                        {
+                            maxMeetSquat = meetResult.Weight;
+                        }
 
-                    if (meetResult.MovementType == 2 && meetResult.Weight > maxMeetBench)
-                    {
-                        maxMeetBench = meetResult.Weight;
-                    }
+                        if (meetResult.MovementType == 2 && meetResult.Weight > maxMeetBench)
+                        {
+                            maxMeetBench = meetResult.Weight;
+                        }
 
-                    if (meetResult.MovementType == 3 && meetResult.Weight > maxMeetDeadlift)
-                    {
-                        maxMeetDeadlift = meetResult.Weight;
+                        if (meetResult.MovementType == 3 && meetResult.Weight > maxMeetDeadlift)
+                        {
+                            maxMeetDeadlift = meetResult.Weight;
+                        }
                     }
                 }
 
@@ -60,7 +62,6 @@ namespace PowerPipes.Controllers
                 {
                     foreach (var exercise in TrainingBL.GetExercices(training.Id, db))
                     {
-                        //if (TrainingBL.GetMovementName(exercise.MovementType, db).Contains("Squat") && exercise.Weight > maxTrainingSquat)
                         if (exercise.MovementType == 1 && exercise.Weight > maxTrainingSquat)
                         {
                             maxTrainingSquat = exercise.Weight;
@@ -94,6 +95,12 @@ namespace PowerPipes.Controllers
                 dashboard.MaxTrainingBenchUnit = maxTrainingBenchUnit;
                 dashboard.MaxTrainingDeadlift = maxTrainingDeadlift;
                 dashboard.MaxTrainingDeadliftUnit = maxTrainingDeadliftUnit;
+
+                dashboard.SquatProgression = TrainingBL.GetSquatProgression((int)Session["IdUser"], db);
+
+                dashboard.BenchProgression = TrainingBL.GetBenchProgression((int)Session["IdUser"], db);
+
+                dashboard.DeadliftProgression = TrainingBL.GetDeadliftProgression((int)Session["IdUser"], db);
 
                 db.connection.Close();
 

@@ -46,5 +46,11 @@ namespace PowerPipes.Models
         public float MaxCompetitionDeadlift { get; set; }
 
         public string MaxCompetitionDeadliftUnit { get; set; }
+
+        public List<MovementProgressElement> SquatProgression { get; set; }
+
+        public List<MovementProgressElement> BenchProgression { get; set; }
+
+        public List<MovementProgressElement> DeadliftProgression { get; set; }
     }
 }

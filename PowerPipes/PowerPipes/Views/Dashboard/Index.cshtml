@@ -35,26 +35,110 @@
 
 <div>
     <div class="col-sm-6 bold padding-top">
-        <img src="../images/squat-graph.png">
+        <div id="squat_progress_chart"></div>
     </div>
 
     <div class="col-sm-6 bold padding-top">
-        <img src="../images/bench-graph.png">
+        <div id="bench_progress_chart"></div>
     </div>
 </div>
 
 <div>
     <div class="col-sm-6 bold padding-top">
-        <img src="../images/dead-graph.png">
-    </div>
-
-    <div class="col-sm-6 bold padding-top">
-        <img src="../images/total-graph.png">
+        <div id="deadlift_progress_chart"></div>
     </div>
 </div>
 
-<div>
-    <div class="col-sm-6 bold padding-top">
-        <img src="../images/wilks-graph.png">
-    </div>
-</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawSquatChart);
+    google.charts.setOnLoadCallback(drawBenchChart);
+    google.charts.setOnLoadCallback(drawDeadliftChart);
+
+    function drawSquatChart() {
+
+        var dataArray = [];
+        dataArray.push(['Date', 'Poids']);
+
+        var exercises = @Html.Raw(Json.Encode(Model.SquatProgression));
+
+        if (Object.keys(exercises).length > 0) {
+            exercises.forEach(function (exercise) {
+                var date = new Date(parseInt(exercise['Date'].replace("/Date(", "").replace(")/", ""), 10))
+                dataArray.push([date, exercise['Weight']]);
+            });
+        } else {
+            dataArray.push([new Date(), 0]);
+        }
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+            title: 'Progression au Squat',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('squat_progress_chart'));
+
+        chart.draw(data, options);
+    }
+
+    function drawBenchChart() {
+
+        var dataArray = [];
+        dataArray.push(['Date', 'Poids']);
+
+        var exercises = @Html.Raw(Json.Encode(Model.BenchProgression));
+
+        if (Object.keys(exercises).length > 0) {
+            exercises.forEach(function (exercise) {
+                var date = new Date(parseInt(exercise['Date'].replace("/Date(", "").replace(")/", ""), 10))
+                dataArray.push([date, exercise['Weight']]);
+            });
+        } else {
+            dataArray.push([new Date(), 0]);
+        }
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+            title: 'Progression au Bench',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('bench_progress_chart'));
+
+        chart.draw(data, options);
+    }
+
+    function drawDeadliftChart() {
+
+        var dataArray = [];
+        dataArray.push(['Date', 'Poids']);
+
+        var exercises = @Html.Raw(Json.Encode(Model.DeadliftProgression));
+        if (Object.keys(exercises).length > 0) {
+            exercises.forEach(function (exercise) {
+                var date = new Date(parseInt(exercise['Date'].replace("/Date(", "").replace(")/", ""), 10))
+                dataArray.push([date, exercise['Weight']]);
+            });
+        } else {
+            dataArray.push([new Date(), 0]);
+        }
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+            title: 'Progression au Deadlift',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('deadlift_progress_chart'));
+
+        chart.draw(data, options);
+    }
+</script>
