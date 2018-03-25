@@ -52,5 +52,9 @@ namespace PowerPipes.Models
         public List<MovementProgressElement> BenchProgression { get; set; }
 
         public List<MovementProgressElement> DeadliftProgression { get; set; }
+
+        public List<GoalProgress> AccomplishedGoals { get; set; }
+
+        public List<GoalProgress> PendingGoals { get; set; }
     }
 }

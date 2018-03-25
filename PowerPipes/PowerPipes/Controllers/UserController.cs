@@ -44,7 +44,7 @@ namespace PowerPipes.Controllers
                     reader.Dispose();
                     cmd.Dispose();
                     db.connection.Close();
-                    return RedirectToAction("Index", "Training");
+                    return RedirectToAction("Index", "Dashboard");
                 }
 
                 reader.Dispose();

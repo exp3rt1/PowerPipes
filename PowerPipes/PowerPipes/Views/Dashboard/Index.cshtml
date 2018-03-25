@@ -1,53 +1,102 @@
 ﻿@using PowerPipes.Models
 @model Dashboard
 
-@section Styles {
-    <link href="@Url.Content("~/Content/Dashboard.css")" rel="stylesheet" type="text/css" />
-}
-
-<div class="jumbotron">
-    <h2> <span class="title">Dashboard</span> </h2>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Best Competition Squat</th>
-                <th scope="col">Best Competition Bench</th>
-                <th scope="col">Best Competition Deadlift</th>
-                <th scope="col">Best Training Squat</th>
-                <th scope="col">Best Training Bench</th>
-                <th scope="col">Best Training Deadlift</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td> @Html.DisplayFor(m => m.MaxCompetitionSquat) </td>
-                <td> @Html.DisplayFor(m => m.MaxCompetitionBench) </td>
-                <td> @Html.DisplayFor(m => m.MaxCompetitionDeadlift) </td>
-                <td> @Html.DisplayFor(m => m.MaxTrainingSquat) </td>
-                <td> @Html.DisplayFor(m => m.MaxTrainingBench) </td>
-                <td> @Html.DisplayFor(m => m.MaxTrainingDeadlift) </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="jumbotron">
+        <h2> <span class="title">Dashboard</span> </h2>
 
-<div>
-    <div class="col-sm-6 bold padding-top">
-        <div id="squat_progress_chart"></div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Best Competition Squat</th>
+                    <th scope="col">Best Competition Bench</th>
+                    <th scope="col">Best Competition Deadlift</th>
+                    <th scope="col">Best Training Squat</th>
+                    <th scope="col">Best Training Bench</th>
+                    <th scope="col">Best Training Deadlift</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionSquat) </td>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionBench) </td>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionDeadlift) </td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingSquat) </td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingBench) </td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingDeadlift) </td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+        <h2>Objectifs Atteints</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Objectifs</th>
+                    <th scope="col">Performances</th>
+                    <th scope="col">Différence</th>
+                    <th scope="col">Accomplis le</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var goalProgress in Model.AccomplishedGoals)
+            {
+                <tr>
+                    <td> @Html.Raw(goalProgress.ExerciseName +" "+ goalProgress.goal.Repetition + " x " + goalProgress.goal.Weight + goalProgress.goal.Unit) </td>
+                    <td> @Html.Raw(goalProgress.PerformedExercise.Repetition + " x " + goalProgress.PerformedExercise.Weight + goalProgress.PerformedExercise.Unit) </td>
+                    <td> @Html.Raw(goalProgress.Difference)</td>
+                    <td> @Html.Raw(goalProgress.AccomplishedDate.ToShortDateString()) </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+
+        <h2>Objectifs à atteindre</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Objectifs</th>
+                    <th scope="col">Performances</th>
+                    <th scope="col">Différence</th>
+                    <th scope="col">Date limite</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var goalProgress in Model.PendingGoals)
+            {
+                <tr>
+                    <td> @Html.Raw(goalProgress.ExerciseName +" "+ goalProgress.goal.Repetition + " x " + goalProgress.goal.Weight + goalProgress.goal.Unit) </td>
+                    <td> @Html.Raw(goalProgress.PerformedExercise.Repetition + " x " + goalProgress.PerformedExercise.Weight + goalProgress.PerformedExercise.Unit) </td>
+                    <td>@Html.Raw(goalProgress.Difference + goalProgress.goal.Unit)</td>
+                    <td> @Html.Raw(goalProgress.goal.Date.ToShortDateString()) </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+
+        <table class="table">
+            <div>
+                <div class="col-sm-6 bold padding-top">
+                    <div id="squat_progress_chart"></div>
+                </div>
+
+                <div class="col-sm-6 bold padding-top">
+                    <div id="bench_progress_chart"></div>
+                </div>
+            </div>
+        </table>
+
+        <table class="table">
+            <div>
+                <div class="col-sm-6 bold padding-top">
+                    <div id="deadlift_progress_chart"></div>
+                </div>
+            </div>
+        </table>
     </div>
-
-    <div class="col-sm-6 bold padding-top">
-        <div id="bench_progress_chart"></div>
-    </div>
-</div>
-
-<div>
-    <div class="col-sm-6 bold padding-top">
-        <div id="deadlift_progress_chart"></div>
-    </div>
-</div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">

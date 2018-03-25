@@ -71,6 +71,70 @@ namespace PowerPipes.BL
             return movementName;
         }
 
+        public static Exercise GetMaxForReps(int MovementType, int reps, DatabaseConnection db)
+        {
+            var cmd = new SqlCommand("SELECT MAX(Weight) AS MaxWeight FROM Exercise WHERE MovementType =" + MovementType +" AND Repetition ="+reps, db.connection);
+            var maxWeight = 0.0f;
+
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                if (!reader.IsDBNull(0))
+                {
+                    maxWeight = (float)reader["MaxWeight"];
+                }
+            }
+            reader.Dispose();
+            cmd.Dispose();
+
+            cmd = new SqlCommand("SELECT MAX(Repetition) AS MaxRep FROM Exercise WHERE MovementType =" + MovementType + " AND Weight=" + maxWeight, db.connection);
+            reader = cmd.ExecuteReader();
+            int maxRep = 0;
+            if(reader.HasRows)
+            {
+                reader.Read();
+                if (!reader.IsDBNull(0))
+                {
+                    maxRep = (int)reader["MaxRep"];
+                }
+            }
+            reader.Dispose();
+            cmd.Dispose();
+
+            cmd = new SqlCommand("SELECT * FROM Exercise WHERE MovementType =" + MovementType + " AND Repetition =" + maxRep + " AND Weight ="+maxWeight, db.connection);
+            Exercise max = new Exercise();
+
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                max.Id = (int)reader["Id"];
+                max.IdTraining = (int)reader["IdTraining"];
+                max.Repetition = (int)reader["Repetition"];
+                max.FailedRepetition = (int)reader["FailedRepetition"];
+                max.MovementType = (int)reader["MovementType"];
+                max.Weight = (float)reader["Weight"];
+                max.Unit = reader["Unit"].ToString();
+            }
+
+            else
+            {
+                max.Id = 0;
+                max.IdTraining = 0;
+                max.Repetition = 0;
+                max.FailedRepetition = 0;
+                max.MovementType = MovementType;
+                max.Weight = 0.0f;
+                max.Unit = "kg";
+            }
+
+            reader.Dispose();
+            cmd.Dispose();
+
+            return max;
+        }
+
         public static List<TrainingHeader> GetTrainings(int idUser, DatabaseConnection db)
         {
             return GetTrainingsWithOrder(idUser, false, db);
