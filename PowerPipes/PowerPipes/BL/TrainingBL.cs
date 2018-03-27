@@ -73,7 +73,7 @@ namespace PowerPipes.BL
 
         public static Exercise GetMaxForReps(int MovementType, int reps, DatabaseConnection db)
         {
-            var cmd = new SqlCommand("SELECT MAX(Weight) AS MaxWeight FROM Exercise WHERE MovementType =" + MovementType +" AND Repetition ="+reps, db.connection);
+            var cmd = new SqlCommand("SELECT MAX(Weight) AS MaxWeight FROM Exercise WHERE MovementType =" + MovementType +" AND Repetition >="+reps, db.connection);
             var maxWeight = 0.0f;
 
             var reader = cmd.ExecuteReader();

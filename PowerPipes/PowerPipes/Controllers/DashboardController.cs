@@ -108,7 +108,7 @@ namespace PowerPipes.Controllers
 
                 foreach (var currentGoal in goalList)
                 {
-                    var maxForRep = TrainingBL.GetMaxForReps(1, currentGoal.Repetition, db);
+                    var maxForRep = TrainingBL.GetMaxForReps(currentGoal.MovementType, currentGoal.Repetition, db);
                     String exerciseName = "";
 
                     if(currentGoal.MovementType == 1)
