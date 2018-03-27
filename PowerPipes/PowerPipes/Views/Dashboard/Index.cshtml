@@ -20,12 +20,12 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> @Html.DisplayFor(m => m.MaxCompetitionSquat) </td>
-                    <td> @Html.DisplayFor(m => m.MaxCompetitionBench) </td>
-                    <td> @Html.DisplayFor(m => m.MaxCompetitionDeadlift) </td>
-                    <td> @Html.DisplayFor(m => m.MaxTrainingSquat) </td>
-                    <td> @Html.DisplayFor(m => m.MaxTrainingBench) </td>
-                    <td> @Html.DisplayFor(m => m.MaxTrainingDeadlift) </td>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionSquat) kg </td>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionBench) kg</td>
+                    <td> @Html.DisplayFor(m => m.MaxCompetitionDeadlift) kg</td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingSquat) @Html.DisplayFor(m => m.MaxTrainingSquatUnit)</td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingBench) @Html.DisplayFor(m => m.MaxTrainingBenchUnit)</td>
+                    <td> @Html.DisplayFor(m => m.MaxTrainingDeadlift) @Html.DisplayFor(m => m.MaxTrainingDeadliftUnit)</td>
                 </tr>
             </tbody>
         </table>
@@ -47,7 +47,7 @@
                 <tr>
                     <td> @Html.Raw(goalProgress.ExerciseName +" "+ goalProgress.goal.Repetition + " x " + goalProgress.goal.Weight + goalProgress.goal.Unit) </td>
                     <td> @Html.Raw(goalProgress.PerformedExercise.Repetition + " x " + goalProgress.PerformedExercise.Weight + goalProgress.PerformedExercise.Unit) </td>
-                    <td> @Html.Raw(goalProgress.Difference)</td>
+                    <td> @Html.Raw(goalProgress.Difference)  @Html.Raw(goalProgress.goal.Unit)</td>
                     <td> @Html.Raw(goalProgress.AccomplishedDate.ToShortDateString()) </td>
                 </tr>
         }

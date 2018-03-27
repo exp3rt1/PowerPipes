@@ -10,15 +10,15 @@ namespace PowerPipes.Models
     public class Profile
     {
         [Required(ErrorMessage = "Un nom est requis")]
-        [DisplayName("Name")]
+        [DisplayName("Nom")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Un alias est requis")]
-        [DisplayName("UserName")]
+        [DisplayName("Alias")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Un age est requis")]
-        [DisplayName("Age")]
+        [DisplayName("Âge")]
         [Range(0.0, Double.MaxValue)]
         public int Age { get; set; }
 
